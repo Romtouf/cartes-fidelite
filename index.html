@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mes Cartes de Fidélité</title>
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Alpine.js -->
+    <script defer src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"></script>
+
+    <!-- JsBarcode -->
+    <script src="https://cdn.jsdelivr.net/npm/jsbarcode@3.11.5/dist/JsBarcode.all.min.js"></script>
+
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+    <style>
+        body {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            background-color: #fafafa;
+        }
+        .glass-effect {
+            background: rgba(255, 255, 255, 0.7);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+        }
+        @keyframes blob {
+            0% { transform: translate(0px, 0px) scale(1); }
+            33% { transform: translate(30px, -50px) scale(1.1); }
+            66% { transform: translate(-20px, 20px) scale(0.9); }
+            100% { transform: translate(0px, 0px) scale(1); }
+        }
+        .animate-blob {
+            animation: blob 7s infinite;
+        }
+        .animation-delay-2000 {
+            animation-delay: 2s;
+        }
+        .animation-delay-4000 {
+            animation-delay: 4s;
+        }
+        .modal-backdrop {
+            background-color: rgba(0, 0, 0, 0.5);
+            backdrop-filter: blur(4px);
+        }
+    </style>
+</head>
+<body class="bg-[#fafafa] min-h-screen">
+    <div x-data="cartesFidelite" class="relative">
+        <!-- Formes décoratives -->
+        <div class="fixed inset-0 -z-10 overflow-hidden">
+            <div class="absolute top-0 left-0 w-96 h-96 bg-purple-200 rounded-full mix-blend-multiply filter blur-3xl opacity-20 animate-blob"></div>
+            <div class="absolute top-0 right-0 w-96 h-96 bg-yellow-200 rounded-full mix-blend-multiply filter blur-3xl opacity-20 animate-blob animation-delay-2000"></div>
+            <div class="absolute -bottom-8 left-20 w-96 h-96 bg-pink-200 rounded-full mix-blend-multiply filter blur-3xl opacity-20 animate-blob animation-delay-4000"></div>
+        </div>
+
+        <!-- En-tête fixe avec effet verre -->
+        <header class="sticky top-0 z-50 glass-effect border-b border-gray-200/30 mb-8">
+            <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-8 text-center">
+                <div class="inline-block">
+                    <!-- Icône Wallet -->
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-12 w-12 mx-auto mb-3 text-violet-600" viewBox="0 0 24 24" fill="currentColor">
+                        <path d="M21 18V19C21 20.1 20.1 21 19 21H5C3.89 21 3 20.1 3 19V5C3 3.9 3.89 3 5 3H19C20.1 3 21 3.9 21 5V6H12C10.89 6 10 6.9 10 8V16C10 17.1 10.89 18 12 18H21ZM12 16H22V8H12V16ZM16 13.5C15.17 13.5 14.5 12.83 14.5 12C14.5 11.17 15.17 10.5 16 10.5C16.83 10.5 17.5 11.17 17.5 12C17.5 12.83 16.83 13.5 16 13.5Z"/>
+                    </svg>
+                    <h1 class="text-4xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-violet-600 to-indigo-600 mb-2">
+                        Wallet
+                    </h1>
+                    <p class="text-gray-500 text-lg">Gérez vos cartes de fidélité en toute simplicité</p>
+                </div>
+                
+                <!-- Badges décoratifs -->
+                <div class="flex justify-center gap-4 mt-4">
+                    <span class="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-violet-100 text-violet-800">
+                        <svg class="w-4 h-4 mr-1" fill="currentColor" viewBox="0 0 20 20">
+                            <path fill-rule="evenodd" d="M6.267 3.455a3.066 3.066 0 001.745-.723 3.066 3.066 0 013.976 0 3.066 3.066 0 001.745.723 3.066 3.066 0 012.812 2.812c.051.643.304 1.254.723 1.745a3.066 3.066 0 010 3.976 3.066 3.066 0 00-.723 1.745 3.066 3.066 0 01-2.812 2.812 3.066 3.066 0 00-1.745.723 3.066 3.066 0 01-3.976 0 3.066 3.066 0 00-1.745-.723 3.066 3.066 0 01-2.812-2.812 3.066 3.066 0 00-.723-1.745 3.066 3.066 0 010-3.976 3.066 3.066 0 00.723-1.745 3.066 3.066 0 012.812-2.812zm7.44 5.252a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/>
+                        </svg>
+                        Sécurisé
+                    </span>
+                    <span class="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-indigo-100 text-indigo-800">
+                        <svg class="w-4 h-4 mr-1" fill="currentColor" viewBox="0 0 20 20">
+                            <path fill-rule="evenodd" d="M11.3 1.046A1 1 0 0112 2v5h4a1 1 0 01.82 1.573l-7 10A1 1 0 018 18v-5H4a1 1 0 01-.82-1.573l7-10a1 1 0 011.12-.38z" clip-rule="evenodd"/>
+                        </svg>
+                        Rapide
+                    </span>
+                    <span class="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-pink-100 text-pink-800">
+                        <svg class="w-4 h-4 mr-1" fill="currentColor" viewBox="0 0 20 20">
+                            <path fill-rule="evenodd" d="M5 2a1 1 0 011 1v1h1a1 1 0 010 2H6v1a1 1 0 01-2 0V6H3a1 1 0 010-2h1V3a1 1 0 011-1zm0 10a1 1 0 011 1v1h1a1 1 0 110 2H6v1a1 1 0 11-2 0v-1H3a1 1 0 110-2h1v-1a1 1 0 011-1zM12 2a1 1 0 01.967.744L14.146 7.2 17.5 9.134a1 1 0 010 1.732l-3.354 1.935-1.18 4.455a1 1 0 01-1.933 0L9.854 12.8 6.5 10.866a1 1 0 010-1.732l3.354-1.935 1.18-4.455A1 1 0 0112 2z" clip-rule="evenodd"/>
+                        </svg>
+                        Simple
+                    </span>
+                </div>
+            </div>
+        </header>
+
+        <main class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
+            <!-- Formulaire d'ajout flottant -->
+            <div class="glass-effect rounded-2xl p-6 mb-12 shadow-lg">
+                <form @submit.prevent="ajouterCarte" class="space-y-6">
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div class="space-y-2">
+                            <label class="text-sm font-medium text-gray-700">Nom de l'enseigne</label>
+                            <input type="text" x-model="nouvelleCarte.enseigne" 
+                                   class="w-full px-4 py-3 bg-white/50 rounded-xl border border-gray-200/50 focus:ring-2 focus:ring-violet-500 focus:border-transparent transition duration-200 outline-none" 
+                                   placeholder="Ex: Carrefour" required>
+                        </div>
+                        <div class="space-y-2">
+                            <label class="text-sm font-medium text-gray-700">Numéro de carte</label>
+                            <input type="text" x-model="nouvelleCarte.numero" 
+                                   class="w-full px-4 py-3 bg-white/50 rounded-xl border border-gray-200/50 focus:ring-2 focus:ring-violet-500 focus:border-transparent transition duration-200 outline-none" 
+                                   placeholder="Ex: 123456789" required>
+                        </div>
+                    </div>
+                    <button type="submit" 
+                            class="w-full bg-violet-600 hover:bg-violet-700 text-white font-medium px-6 py-3 rounded-xl transition duration-200 flex items-center justify-center space-x-2 shadow-lg shadow-violet-200">
+                        <span>Ajouter au wallet</span>
+                    </button>
+                </form>
+            </div>
+
+            <!-- Liste des cartes -->
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <template x-for="carte in cartes" :key="carte.id">
+                    <div class="glass-effect rounded-2xl p-6 transition duration-300 hover:shadow-lg hover:scale-[1.02]">
+                        <div class="flex justify-between items-start mb-6">
+                            <div>
+                                <h3 x-text="carte.enseigne" class="text-xl font-semibold text-gray-900"></h3>
+                                <p class="text-gray-500 text-sm mt-1" x-text="carte.numero"></p>
+                            </div>
+                            <button @click="supprimerCarte(carte.id)" 
+                                    class="p-2 hover:bg-red-50 rounded-xl text-gray-400 hover:text-red-500 transition-colors">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                                    <path fill-rule="evenodd" d="M9 2a1 1 0 00-.894.553L7.382 4H4a1 1 0 000 2v10a2 2 0 002 2h8a2 2 0 002-2V6a1 1 0 100-2h-3.382l-.724-1.447A1 1 0 0011 2H9zM7 8a1 1 0 012 0v6a1 1 0 11-2 0V8zm5-1a1 1 0 00-1 1v6a1 1 0 102 0V8a1 1 0 00-1-1z" clip-rule="evenodd" />
+                                </svg>
+                            </button>
+                        </div>
+                        
+                        <!-- Code-barres cliquable -->
+                        <div @click="openModal(carte)" 
+                             class="bg-white rounded-xl p-4 shadow-inner cursor-pointer hover:bg-gray-50 transition duration-200"
+                             x-init="$nextTick(() => {
+                                 JsBarcode($el.querySelector('svg'), carte.numero, {
+                                     format: 'CODE128',
+                                     width: 2,
+                                     height: 100,
+                                     displayValue: true,
+                                     margin: 10,
+                                     background: '#ffffff',
+                                     lineColor: '#1a1a1a',
+                                     fontSize: 16,
+                                     font: 'Plus Jakarta Sans'
+                                 });
+                             })">
+                            <svg class="w-full"></svg>
+                        </div>
+                    </div>
+                </template>
+            </div>
+        </main>
+
+        <!-- Modale -->
+        <div x-show="modalOpen" 
+             x-transition:enter="transition ease-out duration-300"
+             x-transition:enter-start="opacity-0"
+             x-transition:enter-end="opacity-100"
+             x-transition:leave="transition ease-in duration-300"
+             x-transition:leave-start="opacity-100"
+             x-transition:leave-end="opacity-0"
+             class="fixed inset-0 z-50 overflow-y-auto"
+             @click.self="closeModal"
+             style="display: none;">
+            
+            <div class="modal-backdrop fixed inset-0"></div>
+            
+            <div class="relative min-h-screen flex items-center justify-center p-4">
+                <div class="relative bg-white rounded-2xl max-w-2xl w-full p-8 shadow-xl">
+                    <div class="flex justify-between items-start mb-6">
+                        <div>
+                            <h3 x-text="selectedCard?.enseigne" class="text-2xl font-bold text-gray-900"></h3>
+                            <p class="text-gray-500 mt-1" x-text="selectedCard?.numero"></p>
+                        </div>
+                        <button @click="closeModal" class="p-2 hover:bg-gray-100 rounded-xl transition-colors">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-gray-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                            </svg>
+                        </button>
+                    </div>
+                    
+                    <div class="bg-white rounded-xl p-6 shadow-inner">
+                        <svg x-ref="modalBarcode" class="w-full"></svg>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('alpine:init', () => {
+            Alpine.data('cartesFidelite', () => ({
+                cartes: JSON.parse(localStorage.getItem('cartes')) || [],
+                nouvelleCarte: {
+                    enseigne: '',
+                    numero: ''
+                },
+                modalOpen: false,
+                selectedCard: null,
+
+                ajouterCarte() {
+                    const newCard = {
+                        ...this.nouvelleCarte,
+                        id: Date.now()
+                    };
+                    this.cartes.push(newCard);
+                    this.sauvegarderCartes();
+                    this.nouvelleCarte.enseigne = '';
+                    this.nouvelleCarte.numero = '';
+                },
+
+                openModal(carte) {
+                    this.selectedCard = carte;
+                    this.modalOpen = true;
+                    this.$nextTick(() => {
+                        JsBarcode(this.$refs.modalBarcode, carte.numero, {
+                            format: 'CODE128',
+                            width: 3,
+                            height: 150,
+                            displayValue: true,
+                            margin: 10,
+                            background: '#ffffff',
+                            lineColor: '#1a1a1a',
+                            fontSize: 20,
+                            font: 'Plus Jakarta Sans'
+                        });
+                    });
+                },
+
+                closeModal() {
+                    this.modalOpen = false;
+                    this.selectedCard = null;
+                },
+
+                supprimerCarte(id) {
+                    this.cartes = this.cartes.filter(carte => carte.id !== id);
+                    this.sauvegarderCartes();
+                },
+
+                sauvegarderCartes() {
+                    localStorage.setItem('cartes', JSON.stringify(this.cartes));
+                }
+            }));
+        });
+    </script>
+</body>
+</html>
