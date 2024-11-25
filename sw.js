@@ -1,8 +1,8 @@
 const CACHE_NAME = 'wallet-v1';
 const ASSETS_TO_CACHE = [
-  '/',
-  '/index.html',
-  '/manifest.json',
+  './cartes-fidelite/',
+  './cartes-fidelite/index.html',
+  './cartes-fidelite/manifest.json',
   'https://cdn.tailwindcss.com',
   'https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js',
   'https://cdn.jsdelivr.net/npm/jsbarcode@3.11.5/dist/JsBarcode.all.min.js',
