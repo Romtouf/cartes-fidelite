@@ -262,8 +262,8 @@
     <script>
         if ('serviceWorker' in navigator) {
             window.addEventListener('load', () => {
-                navigator.serviceWorker.register('./sw.js', {
-                    scope: './cartes-fidelite/'
+                navigator.serviceWorker.register('/cartes-fidelite/sw.js', {
+                    scope: '/cartes-fidelite/'
                 })
                 .then(registration => {
                     console.log('Service Worker enregistré avec succès:', registration);
