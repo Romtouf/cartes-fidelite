@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+  <!-- Fond -->
+  <rect width="512" height="512" rx="128" fill="#7c3aed"/>
+  
+  <!-- Carte stylisée -->
+  <g transform="translate(96, 128)">
+    <!-- Carte principale -->
+    <path d="M320 272V288C320 305.7 305.7 320 288 320H32C14.33 320 0 305.7 0 288V32C0 14.33 14.33 0 32 0H288C305.7 0 320 14.33 320 32V48H160C142.3 48 128 62.33 128 80V240C128 257.7 142.3 272 160 272H320Z" 
+          fill="#ffffff"/>
+    
+    <!-- Puce de carte -->
+    <rect x="208" y="160" width="48" height="48" rx="8" fill="#7c3aed"/>
+    
+    <!-- Bande magnétique -->
+    <rect x="160" y="112" width="160" height="32" fill="#7c3aed" opacity="0.3"/>
+  </g>
+</svg>
